@@ -1,26 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.springapp</groupId>
+    <artifactId>ParkingManager</artifactId>
     <packaging>war</packaging>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
-    <groupId>com.example.bookMnager</groupId>
-    <artifactId>bookmanager</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>bookmanager</name>
-    <description>Demo project for Spring Boot</description>
+    <version>1.0-SNAPSHOT</version>
+    <name>ParkingManager</name>
 
     <properties>
-        <java.version>11</java.version>
-        <spring.version>4.1.1.RELEASE</spring.version>
+        <java-version>1.8</java-version>
+        <org.springframework-version>4.0.3.RELEASE</org.springframework-version>
+        <org.aspectj-version>1.7.4</org.aspectj-version>
+        <org.slf4j-version>1.7.5</org.slf4j-version>
+        <hibernate.version>4.3.5.Final</hibernate.version>
     </properties>
-
     <dependencies>
 
         <dependency>
@@ -45,13 +38,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <version>5.3.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
+            <version>5.3.3</version>
         </dependency>
 
 
@@ -161,16 +154,31 @@
             <version>9.0.37</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
 
     </dependencies>
-
     <build>
+        <finalName>ParkingManager</finalName>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.11</source>
+                    <target>1.11</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

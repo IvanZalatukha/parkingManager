@@ -1,28 +1,59 @@
 package com.example.parkingManager.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.example.parkingManager.model.Parking;
+import com.example.parkingManager.service.ParkingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-@WebServlet
-public class Controller extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+@org.springframework.stereotype.Controller
+public class Controller {
+    private ParkingService parkingService;
+
+
+    @Autowired(required = true)
+    @Qualifier(value = "parkingService")
+    public void setParkingService(ParkingService parkingService) {
+        this.parkingService = parkingService;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    @RequestMapping(value = "parkings", method = RequestMethod.GET)
+    public String listParkings(Model model) {
+        model.addAttribute("parking", new Parking());
+        model.addAttribute("listParkings", this.parkingService.getAllParkings());
+        return "parkings";
     }
 
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
+    @RequestMapping(value = "parkings/add", method = RequestMethod.POST)
+    public String addParking(@ModelAttribute("parking") Parking parking) {
+        if (parking.getId() == 0) {
+            this.parkingService.addParking(parking);
+        } else {
+            this.parkingService.updateParking(parking);
+        }
+        return "redirect:/parkings";
     }
+
+    @RequestMapping(value = "/remove/{id}")
+    public String removeParking(@PathVariable("id") int id) {
+        this.removeParking(id);
+        return "redirect:/parkings";
+    }
+
+    @RequestMapping("edit/{id}")
+    public String editBook(@PathVariable("id") int id, Model model){
+        model.addAttribute("book", this.parkingService.getParkingById(id));
+        model.addAttribute("listBooks", this.parkingService.getAllParkings());
+        return "parkings";
+    }
+    @RequestMapping("parkingdata/{id}")
+    public String parkingData(@PathVariable("id") int id, Model model) {
+        model.addAttribute("parking", this.parkingService.getParkingById(id));
+        return "parkingdata";
+    }
+
 }

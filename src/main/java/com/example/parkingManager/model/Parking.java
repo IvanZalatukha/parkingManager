@@ -1,4 +1,5 @@
 package com.example.parkingManager.model;
+
 import javax.persistence.*;
 
 @Entity
